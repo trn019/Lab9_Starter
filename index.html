@@ -69,21 +69,21 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id="con-log">Console Log</button>
+      <button id="con-err">Console Error</button>
+      <button id="con-cnt">Console Count</button>
+      <button id="con-warn">Console Warn</button>
+      <button id="con-asst">Console Assert</button>
+      <button id="con-clr">Console Clear</button>
+      <button id="con-dir">Console Dir</button>
+      <button id="con-dml">Console dirxml</button>
+      <button id="con-gs">Console Group Start</button>
+      <button id="con-ge">Console Group End</button>
+      <button id="con-tbl">Console Table</button>
+      <button id="strt-tmr">Start Timer</button>
+      <button id="end-tmr">End Timer</button>
+      <button id="con-trc">Console Trace</button>
+      <button id="glo-err">Trigger a Global Error</button>
     </section>
   </main>
 
@@ -102,6 +102,82 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        switch(btn.id){
+          case 'con-log':
+            console.log('Console log is being used.');
+            break;
+          case 'con-err':
+            console.error('Console error is being used.');
+            break;
+          case 'con-cnt':
+            console.count();
+            console.log('Console count is being used.');
+            break;
+          case 'con-warn':
+            console.warn('Console warn is being used.');
+            break;
+          case 'con-asst':
+            const x = 4;
+            const y = 3;
+            const reason = 'x should be less than y';
+            console.assert(x<y, {x, y, reason});
+            console.log('Console assert is being used.');
+            break;
+          case 'con-clr':
+            console.clear();
+            console.log('Console clear is being used.');
+            break;
+          case 'con-dir':
+            console.dir(document.head);
+            console.log('Console dir is being used.');
+            break;
+          case 'con-dml':
+            console.dirxml(document);
+            console.log('Console dirxml is being used.');
+            break;
+          case 'con-gs':
+            console.log('Console group start is being used.');
+            console.group('colors');
+            console.log('Red');
+            console.log('Blue');
+            console.log('Green');
+            break;
+          case 'con-ge':
+            console.groupEnd();
+            console.log('Console group end is being used.');
+            break;
+          case 'con-tbl':
+            const people = [
+              {name:'Travis', age: 19},
+              {name:'CSE110', age: 2025},
+              {name:'UCSD', age: 64},
+            ]
+            console.table(people);
+            console.log('Console table is being used.');
+            break;
+          case 'strt-tmr':
+            console.time('Timer');
+            console.log('Console start timer is being used.');
+            break;
+          case 'end-tmr':
+            console.timeEnd('Timer');
+            console.log('Console end timer is being used.');
+            break;
+          case 'con-trc':
+            const first = () => {second();};
+            const second = () => {third();};
+            const third = () => {console.trace();};
+            first();
+            console.log('Console trace is being used.');
+            break;
+          case 'glo-err':
+            throw new Error('This is a global error.');
+            break;
+        }
+      });
+    });
   </script>
 </body>
 
