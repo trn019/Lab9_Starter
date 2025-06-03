@@ -88,6 +88,7 @@
   </main>
 
   <script>
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,88 +96,127 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      
+      let text_output;
+      
+
+      // Error Handling for Error Calculator
+      try {
+        if (firstNum === '' || secondNum === ''){
+          throw new InputError('Empty input(s)');
+        }
+        if (isNaN(firstNum) || isNaN(secondNum)){
+          throw new InputError('Input(s) is not a number');
+        }
+        let result = eval(`${firstNum} ${operator} ${secondNum}`);
+        if (isNaN(result) || !isFinite(result)){
+          throw new Error('Can\'t Divide by Zero');
+        }
+        text_output = result;
+      }
+      catch (err){
+        text_output = err.name + ': ' + err.message;
+      }
+      finally {
+        output.innerHTML = text_output;
+        if (!isNaN(text_output)){
+          console.log(`Calculation equals to ${text_output}`);
+        }
+        else {
+          console.error(text_output);
+        }
+      }
+      // output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
-    errorBtns.forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        switch(btn.id){
-          case 'con-log':
-            console.log('Console log is being used.');
-            break;
-          case 'con-err':
-            console.error('Console error is being used.');
-            break;
-          case 'con-cnt':
-            console.count();
-            console.log('Console count is being used.');
-            break;
-          case 'con-warn':
-            console.warn('Console warn is being used.');
-            break;
-          case 'con-asst':
-            const x = 4;
-            const y = 3;
-            const reason = 'x should be less than y';
-            console.assert(x<y, {x, y, reason});
-            console.log('Console assert is being used.');
-            break;
-          case 'con-clr':
-            console.clear();
-            console.log('Console clear is being used.');
-            break;
-          case 'con-dir':
-            console.dir(document.head);
-            console.log('Console dir is being used.');
-            break;
-          case 'con-dml':
-            console.dirxml(document);
-            console.log('Console dirxml is being used.');
-            break;
-          case 'con-gs':
-            console.log('Console group start is being used.');
-            console.group('colors');
-            console.log('Red');
-            console.log('Blue');
-            console.log('Green');
-            break;
-          case 'con-ge':
-            console.groupEnd();
-            console.log('Console group end is being used.');
-            break;
-          case 'con-tbl':
-            const people = [
-              {name:'Travis', age: 19},
-              {name:'CSE110', age: 2025},
-              {name:'UCSD', age: 64},
-            ]
-            console.table(people);
-            console.log('Console table is being used.');
-            break;
-          case 'strt-tmr':
-            console.time('Timer');
-            console.log('Console start timer is being used.');
-            break;
-          case 'end-tmr':
-            console.timeEnd('Timer');
-            console.log('Console end timer is being used.');
-            break;
-          case 'con-trc':
-            const first = () => {second();};
-            const second = () => {third();};
-            const third = () => {console.trace();};
-            first();
-            console.log('Console trace is being used.');
-            break;
-          case 'glo-err':
-            throw new Error('This is a global error.');
-            break;
-        }
-      });
+    // Buttons for Console
+    
+    document.getElementById('con-log').addEventListener('click', () => {
+      console.log('Console log is being used.');
+    });
+    document.getElementById('con-err').addEventListener('click', () => {
+      console.error('Console error is being used.');
+    });
+    document.getElementById('con-cnt').addEventListener('click', () => {
+      console.count();
+      console.log('Console count is being used.');
+    });
+    document.getElementById('con-warn').addEventListener('click', () => {
+      console.warn('Console warn is being used.');
+    });
+    document.getElementById('con-asst').addEventListener('click', () => {
+      const x = 4;
+        const y = 3;
+        const reason = 'x should be less than y';
+        console.assert(x<y, {x, y, reason});
+        console.log('Console assert is being used.');
+    });
+    document.getElementById('con-clr').addEventListener('click', () => {
+      console.clear();
+      console.log('Console clear is being used.');
+    });
+    document.getElementById('con-dir').addEventListener('click', () => {
+      console.dir(document.head);
+      console.log('Console dir is being used.');
+    });
+    document.getElementById('con-dml').addEventListener('click', () => {
+      console.dirxml(document);
+      console.log('Console dirxml is being used.');
+    });
+    document.getElementById('con-gs').addEventListener('click', () => {
+      console.log('Console group start is being used.');
+      console.group('colors');
+      console.log('Red');
+      console.log('Blue');
+      console.log('Green');
+    });
+    document.getElementById('con-ge').addEventListener('click', () => {
+      console.groupEnd();
+      console.log('Console group end is being used.');
+    });
+    document.getElementById('con-tbl').addEventListener('click', () => {
+      const people = [
+        {name:'Travis', age: 19},
+        {name:'CSE110', age: 2025},
+        {name:'UCSD', age: 64},
+      ]
+      console.table(people);
+      console.log('Console table is being used.');
+    });
+    document.getElementById('strt-tmr').addEventListener('click', () => {
+      console.time('Timer');
+      console.log('Console start timer is being used.');
+    });
+    document.getElementById('end-tmr').addEventListener('click', () => {
+      console.timeEnd('Timer');
+      console.log('Console end timer is being used.');
+    });
+    document.getElementById('con-trc').addEventListener('click', () => {
+      const first = () => {second();};
+      const second = () => {third();};
+      const third = () => {console.trace();};
+      first();
+      console.log('Console trace is being used.');
+    });
+    document.getElementById('glo-err').addEventListener('click', () => {
+      throw new Error('This is a global error.');
+    });
+
+    // Custom Error Constructor
+    class InputError extends Error {
+      constructor(message){
+        super(message);
+        this.name = 'InputError';
+      }
+    }
+
+    // Global Error Handler
+    window.addEventListener('error', (event) => {
+      console.error(`Global Error: ${event.message}`);
     });
   </script>
 </body>
